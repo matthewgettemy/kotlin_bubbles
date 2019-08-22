@@ -18,6 +18,10 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
     val random_x = (0..screenX).random()
     val random_y = (0..screenY).random()
 
+
+    // For making a noise
+    private val soundPlayer = SoundPlayer(context)
+
     val position = RectF(
         random_x / 1f,
         random_y-height,
@@ -60,6 +64,9 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
         val ranX: Float = (0..(screenX - width.toInt())).random().toFloat()
         val ranY: Float = (0.. (screenY - height.toInt())).random().toFloat()
         Log.d("myTag", "X: ${ranX}, Y: ${ranY}.")
+
+        soundPlayer.playSound(
+            SoundPlayer.popID)
 
         position.left = ranX
         position.top = ranY

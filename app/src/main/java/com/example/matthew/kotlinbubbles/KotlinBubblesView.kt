@@ -39,10 +39,14 @@ class KotlinBubblesView(context: Context,
     // Number of bubbles that have been popped
     private var numPops: Int = 0
 
+    // For making a noise
+    private val soundPlayer = SoundPlayer(context)
+
     // To remember the high score
     private val prefs: SharedPreferences = context.getSharedPreferences(
         "Kotlin Bubbles",
         Context.MODE_PRIVATE)
+
 
     private var highScore = prefs.getInt("highScore", 0)
 
