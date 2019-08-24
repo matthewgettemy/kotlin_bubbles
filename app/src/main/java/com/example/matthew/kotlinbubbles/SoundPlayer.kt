@@ -3,6 +3,7 @@ package com.example.matthew.kotlinbubbles
 import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.SoundPool
 import android.util.Log
 import java.io.IOException
@@ -10,9 +11,16 @@ import java.io.IOException
 class SoundPlayer(context: Context) {
 
     // For sound fx
+    /*
     private val soundPool: SoundPool = SoundPool(10,
         AudioManager.STREAM_MUSIC,
         0)
+    */
+
+
+    val audioAttrib = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+    val soundPool = SoundPool.Builder().setAudioAttributes(audioAttrib).setMaxStreams(6).build()
+
 
     companion object {
         var popID = -1

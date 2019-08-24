@@ -15,16 +15,12 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
     var screenY = screenY
     var width = 400f
     var height = 400f
-    val random_x = (0..screenX).random()
-    val random_y = (0..screenY).random()
-
-
-    // For making a noise
-    private val soundPlayer = SoundPlayer(context)
+    val random_x = (0..screenX-width.toInt()).random()
+    val random_y = (height.toInt()..screenY-height.toInt()).random()
 
     val position = RectF(
         random_x / 1f,
-        random_y-height,
+        random_y - height,
         random_x + width,
         random_y.toFloat())
 
@@ -33,16 +29,24 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
 
     var isVisible = true
 
+    companion object {
 
-    // Initialize the bitmaps
-    var bitmap = BitmapFactory.decodeResource(
+        // Single bitmap to use for all the bubbles
+        var bitmap1: Bitmap? = null
+
+        // number of active bubbles
+        var numBubbles: Int = 0
+
+    }
+
+    init {
+        // Initialize the bitmaps
+        bitmap1 = BitmapFactory.decodeResource(
             context.resources,
             R.drawable.bubble)
 
-    init {
-
-        bitmap = Bitmap.createScaledBitmap(
-            bitmap!!,
+        bitmap1 = Bitmap.createScaledBitmap(
+            bitmap1!!,
             (width.toInt()),
             (height.toInt()),
             false)
@@ -60,19 +64,8 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
         position.bottom = 100f + height
         */
     }
-    fun pop() {
-        val ranX: Float = (0..(screenX - width.toInt())).random().toFloat()
-        val ranY: Float = (0.. (screenY - height.toInt())).random().toFloat()
-        Log.d("myTag", "X: ${ranX}, Y: ${ranY}.")
 
-        soundPlayer.playSound(
-            SoundPlayer.popID)
 
-        position.left = ranX
-        position.top = ranY
-        position.right = ranX + width
-        position.bottom = ranY + height
 
-    }
 
 }

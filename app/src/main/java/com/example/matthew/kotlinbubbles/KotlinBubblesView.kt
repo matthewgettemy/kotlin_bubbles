@@ -29,6 +29,9 @@ class KotlinBubblesView(context: Context,
 
     // The bubble
     private var bubble: Bubble = Bubble(context, size.x, size.y)
+    // More bubbles
+    private var bubbles = ArrayList<Bubble>()
+    private var numBubbles: Int = 0
 
     // How menacing should the sound be?
     private var menaceInterval: Long = 1000
@@ -130,10 +133,18 @@ class KotlinBubblesView(context: Context,
             // Choose the brush color for drawing
             paint.color = Color.argb(255, 0, 255, 0)
 
-            // Draw all the game objects here
-            // Now draw the player spaceship
-            canvas.drawBitmap(bubble.bitmap, bubble.position.left,
-                              bubble.position.top, paint)
+            // Draw the bubbles
+            for (bub in bubbles) {
+                if (bub.isVisible) {
+                    canvas.drawBitmap(Bubble.bitmap1!!, bub.position.left,
+                        bub.position.top, paint)
+                }
+            }
+
+
+
+
+
 
             /*
             // Draw the invaders
@@ -191,7 +202,16 @@ class KotlinBubblesView(context: Context,
         // Update the state of all the game objects
 
         // Move the bubble
-        bubble.update(fps)
+        if (addBubble()) {
+            bubbles.add(Bubble(context, size.x, size.y))
+            Bubble.numBubbles++
+        }
+        for (bub in bubbles) {
+            if (bub.isVisible) {
+                bub.update(fps)
+            }
+        }
+
 
         /*
         // Did an invader bump into the side of the screen
@@ -390,19 +410,35 @@ class KotlinBubblesView(context: Context,
 
             // Player has touched the screen
             // or moved their finger while touching the screen
+            /*
             MotionEvent.ACTION_POINTER_DOWN,
             MotionEvent.ACTION_DOWN,
             MotionEvent.ACTION_MOVE-> {
+            */
+            MotionEvent.ACTION_POINTER_DOWN,
+            MotionEvent.ACTION_DOWN-> {
+                val motionX: Float = motionEvent.x
+                val motionY: Float = motionEvent.y
                 paused = false
-                    Log.d("myTag", "motion detect at ${motionEvent.x}, ${motionEvent.y}!")
-                    if (bubble.position.intersects(motionEvent.x, motionEvent.y,
-                        motionEvent.x, motionEvent.y)) {
-                        bubble.pop()
-                        numPops++
-                        if (numPops > highScore) {
-                            highScore = numPops
+                    // Log.d("myTag", "motion detect at ${motionEvent.x}, ${motionEvent.y}!")
+                    for (bub in bubbles) {
+                        if (bub.isVisible) {
+                            if (bub.position.contains(motionX, motionY)) {
+                                // bub.pop()
+                                soundPlayer.playSound(SoundPlayer.popID)
+                                bub.isVisible = false
+                                Bubble.numBubbles--
+                                numPops++
+                                if (numPops > highScore) {
+                                    highScore = numPops
+                                }
+                            }
                         }
+
                     }
+
+
+
                 /*
                     if (motionEvent.y > size.y - size.y / 8) {
                         if (motionEvent.x > size.x / 2) {
@@ -440,6 +476,24 @@ class KotlinBubblesView(context: Context,
             }
 
         return true
+    }
+
+    private fun addBubble(): Boolean {
+
+
+        var addBub = false
+
+        if (Bubble.numBubbles > 8) {
+            addBub = false
+        } else {
+            val randomNumber: Int = (1..10000).random()
+            // addBub = randomNumber > 9450
+            addBub = randomNumber > 9600
+
+        }
+
+        return addBub
+
     }
 
 }
