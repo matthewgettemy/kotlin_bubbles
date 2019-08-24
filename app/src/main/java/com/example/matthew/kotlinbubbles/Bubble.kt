@@ -9,12 +9,25 @@ import android.util.Log
 
 class Bubble(context: Context, screenX: Int, screenY: Int) {
 
+    companion object {
+
+        // Single bitmap to use for all the bubbles
+        // var bitmap1: Bitmap? = null
+
+        val maxSize = 650
+        val minSize = 250
+
+        // number of active bubbles
+        var numBubbles: Int = 0
+
+    }
+
     // var width = screenX / 35f
     // var height = screenY / 35f
     var screenX = screenX
     var screenY = screenY
-    var width = 400f
-    var height = 400f
+    var width = (minSize..maxSize).random().toFloat()
+    var height = width
     val random_x = (0..screenX-width.toInt()).random()
     val random_y = (height.toInt()..screenY-height.toInt()).random()
 
@@ -27,17 +40,11 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
     // Pixels per second
     private var speed = 40f
 
+    var bitmap1: Bitmap? = null
+
     var isVisible = true
 
-    companion object {
 
-        // Single bitmap to use for all the bubbles
-        var bitmap1: Bitmap? = null
-
-        // number of active bubbles
-        var numBubbles: Int = 0
-
-    }
 
     init {
         // Initialize the bitmaps
@@ -52,6 +59,7 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
             false)
     }
 
+    /*
     fun update(fps: Long) {
 
         val ranX: Float = (0..screenX).random().toFloat()
@@ -64,8 +72,6 @@ class Bubble(context: Context, screenX: Int, screenY: Int) {
         position.bottom = 100f + height
         */
     }
-
-
-
+    */
 
 }

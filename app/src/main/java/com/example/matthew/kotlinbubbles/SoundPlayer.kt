@@ -65,8 +65,8 @@ class SoundPlayer(context: Context) {
 
     }
 
-    fun playSound(id: Int) {
-        soundPool.play(id, 1f, 1f, 0, 0, 1f)
+    fun playSound(id: Int, rate: Float) {
+        soundPool.play(id, 1f, 1f, 0, 0, rate)
     }
 
 }

@@ -136,7 +136,7 @@ class KotlinBubblesView(context: Context,
             // Draw the bubbles
             for (bub in bubbles) {
                 if (bub.isVisible) {
-                    canvas.drawBitmap(Bubble.bitmap1!!, bub.position.left,
+                    canvas.drawBitmap(bub.bitmap1!!, bub.position.left,
                         bub.position.top, paint)
                 }
             }
@@ -187,8 +187,7 @@ class KotlinBubblesView(context: Context,
             // Change the brush color
             paint.color = Color.argb(255, 255, 255, 255)
             paint.textSize = 70f
-            canvas.drawText("Score: ${numPops}   Lives: 1 Wave: " +
-                    "1 HI: $highScore", 20f, 75f, paint)
+            canvas.drawText("  Score: ${numPops}   High Score: $highScore", 20f, 75f, paint)
 
 
             // Draw everything to the screen
@@ -206,12 +205,13 @@ class KotlinBubblesView(context: Context,
             bubbles.add(Bubble(context, size.x, size.y))
             Bubble.numBubbles++
         }
+        /*
         for (bub in bubbles) {
             if (bub.isVisible) {
                 bub.update(fps)
             }
         }
-
+        */
 
         /*
         // Did an invader bump into the side of the screen
@@ -421,11 +421,14 @@ class KotlinBubblesView(context: Context,
                 val motionY: Float = motionEvent.y
                 paused = false
                     // Log.d("myTag", "motion detect at ${motionEvent.x}, ${motionEvent.y}!")
-                    for (bub in bubbles) {
+                    for (bub in bubbles) { 
                         if (bub.isVisible) {
                             if (bub.position.contains(motionX, motionY)) {
                                 // bub.pop()
-                                soundPlayer.playSound(SoundPlayer.popID)
+                                // val rate: Float = 2 - ((bub.height - Bubble.minSize)/(Bubble.maxSize - Bubble.minSize))
+                                val rate: Float = 1.5f - ((bub.height - Bubble.minSize)/(Bubble.maxSize - Bubble.minSize))
+                                Log.d("mytag", "${rate}")
+                                soundPlayer.playSound(SoundPlayer.popID, rate)
                                 bub.isVisible = false
                                 Bubble.numBubbles--
                                 numPops++
